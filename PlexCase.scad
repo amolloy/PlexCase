@@ -5,17 +5,24 @@ use <keystone.scad>
 
 wallThickness = 2;
 boxDepth = 20;
+sideClearances = 2;
+
+ssdSize = [115, 36, 1];
+ssdUSBPlugClearance = 55;
 
 piSize = piBoardDim("3B");
-boxSize = [piSize.x,
-           piSize.y];
+boxSize = [max(ssdSize.x + ssdUSBPlugClearance, piSize.x + sideClearances * 2),
+           piSize.y + sideClearances * 2 + ssdSize.y + 10];
+           
+piOffset = [-boxSize.x / 2 - sideClearances,
+            -boxSize.y / 2,
+            -boxDepth / 2];
 
 boxBase();
-for (pos=piHoleLocations()) {
-    translate([pos.x - boxSize.x / 2,
-               pos.y - boxSize.y / 2,
-               -boxDepth / 2]) screwmount();
-}
+translate([-boxSize.x / 2 + sideClearances,
+           -boxSize.y / 2,
+           -boxDepth / 2]) piPosts("3B", 5);
+
 //keystone();
 
 module boxBase() {
