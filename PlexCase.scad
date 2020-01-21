@@ -30,7 +30,7 @@ piOffset = [-boxSize.x / 2 - sideClearances + (sdcardAccessSize.x - sdcardAccess
 keystoneOffset = [boxSize.x / 2 - 35, 
                   -(boxSize.y / 2 + wallThickness / 2),
                  13];
-                 
+    
 difference() {
     boxBase();
     powerPort();
@@ -71,6 +71,40 @@ module lid() {
                       middleHeight - cr * 2],
                 center=true);
                 cylinder(r=cr, h=1);
+            }
+        }
+        
+        translate([boxSize.x / 2 - wallThickness / 2 + 0.15, 0, boxDepth / 2 - wallThickness / 2 + 1.13]) {
+            
+        }
+        
+        translate([boxSize.x / 2 - 0.9, 
+                   0, 
+                   boxDepth / 2 + 0.245]) {
+            cube([wallThickness, 
+                  boxSize.y - wallThickness * 1.25, 
+                  wallThickness / 2],
+                 center=true);
+        }
+
+        
+        intersection() {
+            translate([boxSize.x / 2 - wallThickness / 2 + 0.08, 0, boxDepth / 2 - wallThickness / 2 + 1.4]) {
+                minkowski() {
+                    cube([wallThickness * 0.96, 
+                          boxSize.y, 
+                          wallThickness - 3.5],
+                    center=true);
+                    sphere(2);
+                }
+            }
+            translate([boxSize.x / 2 + wallThickness / 2, 
+                   0, 
+                   boxDepth / 2 + 0.245]) {
+                cube([wallThickness / 1.7, 
+                      boxSize.y - wallThickness * 1.25, 
+                      wallThickness / 2],
+                center=true);
             }
         }
     }
