@@ -3,7 +3,7 @@ $fn = 50;
 use <PiHoles/PiHoles.scad>
 use <keystone.scad>
 
-wallThickness = 2;
+wallThickness = 4;
 boxDepth = 34;
 sideClearances = 2;
 
@@ -102,10 +102,10 @@ module boxBase() {
                 }
             }
 
-            translate([-boxSize.x / 2 + sdcardAccessSize.x - sdcardAccessSize.x / 2 - wallThickness - 0.5, 
+            translate([-boxSize.x / 2 + 6, 
                        piOffset.y / 2, 
                        -boxDepth / 2 + sdcardAccessSize.z / 2]) {
-                cube([sdcardAccessSize.x - wallThickness * 2, 
+                cube([sdcardAccessSize.x - wallThickness, 
                   sdcardAccessSize.y + wallThickness * 2,
                   sdcardAccessSize.z], 
                      center = true);
@@ -117,8 +117,8 @@ module boxBase() {
                        piOffset.y / 2, 
                        -boxDepth / 2 + sdcardAccessSize.z / 2 - wallThickness]) {
             cube([sdcao.x + 2, 
-                  sdcao.y - wallThickness * 2, 
-                  sdcao.z - wallThickness * 2], 
+                  sdcao.y - wallThickness, 
+                  sdcao.z], 
                  center = true);
             }
         }
