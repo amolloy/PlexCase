@@ -31,25 +31,30 @@ keystoneOffset = [boxSize.x / 2 - 35,
                   -(boxSize.y / 2 + wallThickness / 2),
                  13];
     
-difference() {
-    boxBase();
-    powerPort();
-    hdmiPort(0);
-    hdmiPort(13.5);
-    headphonePort();
-    keystonePort();
-    lidSlide();
-}
+// Uncomment to render the main box
+//enclosure();
+// Uncomment to render the box lid.
+//lid();
 
-lid();
+module enclosure() {
+    difference() {
+        boxBase();
+        powerPort();
+        hdmiPort(0);
+        hdmiPort(13.5);
+        headphonePort();
+        keystonePort();
+        lidSlide();
+    }
 
-translate(piOffset) piPosts("3B", 5);
-translate([0, 0, -boxDepth / 2 + ssdPostHeight / 2]) {
-    ssdSupport(-10, boxSize.y / 2 - 36 / 2 - 5, 100, 36);
-}
+    translate(piOffset) piPosts("3B", 5);
+    translate([0, 0, -boxDepth / 2 + ssdPostHeight / 2]) {
+        ssdSupport(-10, boxSize.y / 2 - 36 / 2 - 5, 100, 36);
+    }
 
-translate(keystoneOffset) {
-    rotate([270,0,0]) keystone();
+    translate(keystoneOffset) {
+        rotate([270,0,0]) keystone();
+    }
 }
 
 module lid() {
