@@ -29,20 +29,28 @@ piOffset = [-boxSize.x / 2 - sideClearances + (sdcardAccessSize.x - sdcardAccess
 
 boxBase();
 translate(piOffset) piPosts("3B", 5);
-
-//ssdPost();
+ssdSupport(-10, boxSize.y / 2 - 36 / 2 - 5, 115, 36);
 //keystone();
 
-module ssdPost() {
-    union() {
-        cube([ssdPostWidth, ssdPostWidth, ssdPostHeight], center = true);
-        translate([0, 0, ssdPostHeight / 2]) {
-            translate([ssdPostWidth / 2, -ssdPostWidth / 2, -(ssdPostHook + ssdPostGap + ssdSupport)]) cube([ssdPostHook, ssdPostWidth, ssdSupport]);
-            
-            translate([ssdPostWidth / 2, ssdPostWidth / 2, -ssdPostHook]) {
-                rotate([90, 0, 00]) {
-                    linear_extrude(ssdPostWidth) {
-                        polygon([[0, 0], [0, ssdPostHook], [ssdPostHook, 0]]);
+module ssdSupport(cx, cy, w, h) {
+    translate([cx - w / 2, cy - h / 2]) ssdPost(90);
+    translate([cx + w / 2, cy - h / 2]) ssdPost(90);
+    translate([cx + w / 2, cy + h / 2]) ssdPost(-90);
+    translate([cx - w / 2, cy + h / 2]) ssdPost(-90);
+}
+
+module ssdPost(angle) {
+    rotate(angle) {
+        union() {
+            cube([ssdPostWidth, ssdPostWidth, ssdPostHeight], center = true);
+            translate([0, 0, ssdPostHeight / 2]) {
+                translate([ssdPostWidth / 2, -ssdPostWidth / 2, -(ssdPostHook + ssdPostGap + ssdSupport)]) cube([ssdPostHook, ssdPostWidth, ssdSupport]);
+                
+                translate([ssdPostWidth / 2, ssdPostWidth / 2, -ssdPostHook]) {
+                    rotate([90, 0, 00]) {
+                        linear_extrude(ssdPostWidth) {
+                            polygon([[0, 0], [0, ssdPostHook], [ssdPostHook, 0]]);
+                        }
                     }
                 }
             }
