@@ -30,7 +30,8 @@ piOffset = [-boxSize.x / 2 - sideClearances + (sdcardAccessSize.x - sdcardAccess
 keystoneOffset = [boxSize.x / 2 - 35, 
                   -(boxSize.y / 2 + wallThickness / 2),
                  13];
-
+                 
+                 /*
 difference() {
     boxBase();
     powerPort();
@@ -40,6 +41,8 @@ difference() {
     keystonePort();
     lidSlide();
 }
+*/
+lid();
 
 translate(piOffset) piPosts("3B", 5);
 translate([0, 0, -boxDepth / 2 + ssdPostHeight / 2]) {
@@ -48,6 +51,39 @@ translate([0, 0, -boxDepth / 2 + ssdPostHeight / 2]) {
 
 translate(keystoneOffset) {
     rotate([270,0,0]) keystone();
+}
+
+module lid() {
+    rimHeight = wallThickness / 2 * 0.9;
+    middleHeight = wallThickness * 1.5;
+    
+    union() {
+        translate([wallThickness / 2, 0, boxDepth / 2 - wallThickness / 2 + 1]) {
+            cube([boxSize.x, 
+                  boxSize.y * 0.99, 
+                  rimHeight],
+            center=true);
+            cube([boxSize.x - wallThickness * 2 + wallThickness,
+                  boxSize.y - wallThickness * 1.25,
+                  middleHeight],
+            center=true);
+        }
+
+        translate([-boxSize.x / 2 + wallThickness * 1.05, 
+                   boxSize.y / 2 - wallThickness * 1.05, 
+                   boxDepth / 2 - (rimHeight + middleHeight) / 2])
+        linear_extrude(middleHeight) circle(1.75);
+
+        translate([-boxSize.x / 2 + wallThickness * 1.05, 
+                   -boxSize.y / 2 + wallThickness * 1.05, 
+                   boxDepth / 2 - (rimHeight + middleHeight) / 2])
+        linear_extrude(middleHeight) circle(1.75);
+        
+        translate([-boxSize.x / 2 + wallThickness * 1.05,
+                  0,
+                  boxDepth / 2 - wallThickness / 2 + 1.1])
+        cube([wallThickness * 0.85, boxSize.y - wallThickness * 2, middleHeight], center=true);
+    }
 }
 
 module lidSlide() {
