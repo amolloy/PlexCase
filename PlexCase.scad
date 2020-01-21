@@ -18,7 +18,7 @@ ssdPostWidth = 2;
 ssdPostHeight = 8;
 ssdPostHook = 1;
 ssdPostGap = 1.1;
-ssdSupport = 1;
+ssdSupport = ssdPostHeight - (ssdPostHook + ssdPostGap);
 
 boxSize = [ssdSize.x + ssdUSBPlugClearance,
            piSize.y + sideClearances * 2 + ssdSize.y + 10];
@@ -29,7 +29,9 @@ piOffset = [-boxSize.x / 2 - sideClearances + (sdcardAccessSize.x - sdcardAccess
 
 boxBase();
 translate(piOffset) piPosts("3B", 5);
-ssdSupport(-10, boxSize.y / 2 - 36 / 2 - 5, 115, 36);
+translate([0, 0, -boxDepth / 2 + ssdPostHeight]) {
+    ssdSupport(-10, boxSize.y / 2 - 36 / 2 - 5, 115, 36);
+}
 //keystone();
 
 module ssdSupport(cx, cy, w, h) {
@@ -44,7 +46,7 @@ module ssdPost(angle) {
         union() {
             cube([ssdPostWidth, ssdPostWidth, ssdPostHeight], center = true);
             translate([0, 0, ssdPostHeight / 2]) {
-                translate([ssdPostWidth / 2, -ssdPostWidth / 2, -(ssdPostHook + ssdPostGap + ssdSupport)]) cube([ssdPostHook, ssdPostWidth, ssdSupport]);
+                translate([ssdPostWidth / 2, -ssdPostWidth / 2, -(ssdPostHook + ssdPostGap + ssdSupport)]) cube([ssdPostHook + 1, ssdPostWidth, ssdSupport]);
                 
                 translate([ssdPostWidth / 2, ssdPostWidth / 2, -ssdPostHook]) {
                     rotate([90, 0, 00]) {
