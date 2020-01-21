@@ -38,6 +38,7 @@ difference() {
     hdmiPort(13.5);
     headphonePort();
     keystonePort();
+    lidSlide();
 }
 
 translate(piOffset) piPosts("3B", 5);
@@ -47,6 +48,19 @@ translate([0, 0, -boxDepth / 2 + ssdPostHeight / 2]) {
 
 translate(keystoneOffset) {
     rotate([270,0,0]) keystone();
+}
+
+module lidSlide() {
+    union() {
+        translate([-boxSize.x / 2 + 1, -boxSize.y / 2, boxDepth / 2 - wallThickness / 2]) {
+            cube([boxSize.x - wallThickness / 2 + wallThickness * 8, 
+                  boxSize.y, 
+                  2]);
+        }
+        translate([boxSize.x / 2 - wallThickness, -boxSize.y / 2 + wallThickness / 2, boxDepth / 2 - 1]) {
+            cube([wallThickness * 2, boxSize.y - wallThickness, wallThickness + 1]);
+        }
+    }
 }
 
 module ssdSupport(cx, cy, w, h) {
