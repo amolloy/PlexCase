@@ -32,9 +32,9 @@ keystoneOffset = [boxSize.x / 2 - 35,
                  13];
     
 // Uncomment to render the main box
-//enclosure();
+enclosure();
 // Uncomment to render the box lid.
-//lid();
+lid();
 
 module enclosure() {
     difference() {
@@ -64,6 +64,12 @@ module lid() {
     cr = 1.75;
     
     union() {
+        translate([-boxSize.x / 2 + 15,
+                   0,
+                   boxDepth / 2 - 0.3]) {
+            rotate([90, 0, 0]) cylinder(r=0.5, h=boxSize.y * 0.99, center=true);
+        }
+        
         translate([wallThickness / 2, 0, boxDepth / 2 - wallThickness / 2 + 1]) {
             cube([boxSize.x, 
                   boxSize.y * 0.99, 
@@ -116,14 +122,22 @@ module lid() {
 }
 
 module lidSlide() {
-    union() {
-        translate([-boxSize.x / 2 + 1, -boxSize.y / 2, boxDepth / 2 - wallThickness / 2]) {
-            cube([boxSize.x - wallThickness / 2 + wallThickness * 8, 
-                  boxSize.y, 
-                  2]);
+    difference() {
+        union() {
+            translate([-boxSize.x / 2 + 1, -boxSize.y / 2, boxDepth / 2 - wallThickness / 2]) {
+                cube([boxSize.x - wallThickness / 2 + wallThickness * 8, 
+                      boxSize.y, 
+                      2]);
+            }
+            translate([boxSize.x / 2 - wallThickness, -boxSize.y / 2 + wallThickness / 2, boxDepth / 2 - 1]) {
+                cube([wallThickness * 2, boxSize.y - wallThickness, wallThickness + 1]);
+            }
         }
-        translate([boxSize.x / 2 - wallThickness, -boxSize.y / 2 + wallThickness / 2, boxDepth / 2 - 1]) {
-            cube([wallThickness * 2, boxSize.y - wallThickness, wallThickness + 1]);
+    
+        translate([-boxSize.x / 2 + 14,
+               0,
+               boxDepth / 2 + 0.1]) {
+        rotate([90, 0, 0]) cylinder(r=0.5, h=boxSize.y* 2, center=true);
         }
     }
 }
