@@ -35,10 +35,10 @@ translate([0, 0, -boxDepth / 2 + ssdPostHeight]) {
 //keystone();
 
 module ssdSupport(cx, cy, w, h) {
-    translate([cx - w / 2, cy - h / 2]) ssdPost(90);
-    translate([cx + w / 2, cy - h / 2]) ssdPost(90);
-    translate([cx + w / 2, cy + h / 2]) ssdPost(-90);
-    translate([cx - w / 2, cy + h / 2]) ssdPost(-90);
+    translate([cx - w / 2, cy - h / 2 - ssdPostWidth / 2]) ssdPost(90);
+    translate([cx + w / 2, cy - h / 2 - ssdPostWidth / 2]) ssdPost(90);
+    translate([cx + w / 2, cy + h / 2 + ssdPostWidth / 2]) ssdPost(-90);
+    translate([cx - w / 2, cy + h / 2 + ssdPostWidth / 2]) ssdPost(-90);
 }
 
 module ssdPost(angle) {
