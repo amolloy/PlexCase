@@ -17,7 +17,7 @@ sdcardAccessOverlap = 2;
 ssdPostWidth = 2;
 ssdPostHeight = 8;
 ssdPostHook = 1;
-ssdPostGap = 1.1;
+ssdPostGap = 1.4;
 ssdSupport = ssdPostHeight - (ssdPostHook + ssdPostGap);
 
 boxSize = [ssdSize.x + ssdUSBPlugClearance,
@@ -60,7 +60,7 @@ module ssdPost(angle) {
     rotate(angle) {
         union() {
             translate([ssdPostWidth / 2, 0, -ssdPostHeight / 2]) {
-                cylinder(ssdPostHeight / 2, ssdPostWidth * 1.5, ssdPostWidth * 0.5);
+                cylinder(ssdPostHeight / 1.5, ssdPostWidth * 2.5, ssdPostWidth * 0.5);
             }
             cube([ssdPostWidth, ssdPostWidth, ssdPostHeight], center = true);
             translate([0, 0, ssdPostHeight / 2]) {
@@ -69,7 +69,7 @@ module ssdPost(angle) {
                 translate([ssdPostWidth / 2, ssdPostWidth / 2, -ssdPostHook]) {
                     rotate([90, 0, 00]) {
                         linear_extrude(ssdPostWidth) {
-                            polygon([[0, 0], [0, ssdPostHook], [ssdPostHook, 0]]);
+                            polygon([[0, 0], [0, ssdPostHook], [ssdPostHook * 0.75, 0]]);
                         }
                     }
                 }
