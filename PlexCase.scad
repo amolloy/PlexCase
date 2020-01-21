@@ -4,7 +4,7 @@ use <PiHoles/PiHoles.scad>
 use <keystone.scad>
 
 wallThickness = 2;
-boxDepth = 20;
+boxDepth = 34;
 sideClearances = 2;
 
 ssdSize = [115, 36, 1];
@@ -26,6 +26,10 @@ boxSize = [ssdSize.x + ssdUSBPlugClearance,
 piOffset = [-boxSize.x / 2 - sideClearances + (sdcardAccessSize.x - sdcardAccessOverlap),
             -boxSize.y / 2,
             -boxDepth / 2];
+            
+keystoneOffset = [boxSize.x / 2 - 35, 
+                  -(boxSize.y / 2 + wallThickness / 2),
+                 13];
 
 difference() {
     boxBase();
@@ -33,6 +37,7 @@ difference() {
     hdmiPort(0);
     hdmiPort(13.5);
     headphonePort();
+    keystonePort();
 }
 
 translate(piOffset) piPosts("3B", 5);
@@ -40,7 +45,9 @@ translate([0, 0, -boxDepth / 2 + ssdPostHeight / 2]) {
     ssdSupport(-10, boxSize.y / 2 - 36 / 2 - 5, 115, 36);
 }
 
-//keystone();
+translate(keystoneOffset) {
+    rotate([270,0,0]) keystone();
+}
 
 module ssdSupport(cx, cy, w, h) {
     translate([cx - w / 2, cy - h / 2 - ssdPostWidth / 2]) ssdPost(90);
@@ -138,5 +145,11 @@ module hdmiPort(off) {
 module headphonePort() {
     translate([piOffset.x + 53.5, -(boxSize.y / 2), piOffset.z + 5 + 6.0 - 3.75 / 2]) {
         rotate([90,0,0]) cylinder(6, 3, 3);
+    }
+}
+
+module keystonePort() {
+    translate([keystoneOffset.x, keystoneOffset.y - 5, keystoneOffset.z]) {
+        rotate([270,0,0]) cube([30.5,23,10]);
     }
 }
