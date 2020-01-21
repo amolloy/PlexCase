@@ -27,11 +27,19 @@ piOffset = [-boxSize.x / 2 - sideClearances + (sdcardAccessSize.x - sdcardAccess
             -boxSize.y / 2,
             -boxDepth / 2];
 
-boxBase();
+difference() {
+    boxBase();
+    powerPort();
+    hdmiPort(0);
+    hdmiPort(13.5);
+    headphonePort();
+}
+
 translate(piOffset) piPosts("3B", 5);
 translate([0, 0, -boxDepth / 2 + ssdPostHeight / 2]) {
     ssdSupport(-10, boxSize.y / 2 - 36 / 2 - 5, 115, 36);
 }
+
 //keystone();
 
 module ssdSupport(cx, cy, w, h) {
@@ -109,3 +117,26 @@ module boxBase() {
         }
 }
 
+module powerPort() {
+    translate([piOffset.x + 3.5 + 7.7 / 2, -(boxSize.y / 2 + 3), piOffset.z + 5 + 3.2 - 3.75 / 2]) {
+        minkowski() {
+            cube([9.5 - 1, 5, 3.75 - 1]);
+            sphere(1);
+        }
+    }
+}
+
+module hdmiPort(off) {
+    translate([piOffset.x + 3.5 + 7.7 + 14.8 - 7 / 2 + off, -(boxSize.y / 2 + 3), piOffset.z + 5 + 3.0 - 3.75 / 2]) {
+        minkowski() {
+            cube([7 - 1, 5, 5 - 1]);
+            sphere(1);
+        }
+    }
+}
+
+module headphonePort() {
+    translate([piOffset.x + 53.5, -(boxSize.y / 2), piOffset.z + 5 + 6.0 - 3.75 / 2]) {
+        rotate([90,0,0]) cylinder(6, 3, 3);
+    }
+}
