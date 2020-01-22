@@ -3,6 +3,11 @@ $fn = 50;
 use <PiHoles/PiHoles.scad>
 use <keystone.scad>
 
+piEdgeToMt = 3.5;
+piMntToPwr = 7.7;
+piPwrToHDMI1 = 14.8;
+piHDMI1ToHDMI2 = 13.5;
+
 lidFix = 0.35;
 
 wallThickness = 3;
@@ -44,7 +49,7 @@ module enclosure() {
         portDent();
         powerPort();
         hdmiPort(0);
-        hdmiPort(13.5);
+        hdmiPort(piHDMI1ToHDMI2);
         headphonePort();
         keystonePort();
         lidSlide();
@@ -255,7 +260,7 @@ module boxBase() {
 }
 
 module portDent() {
-    w = ((piOffset.x + 3.5 + 7.7 / 2) + (piOffset.x + 53.5));
+    w = ((piOffset.x + piEdgeToMt + piMntToPwr / 2) + (piOffset.x + 53.5));
     x = w / 2;
     translate([x, -(boxSize.y / 2 + 2), piOffset.z + 6 + 5.0 - 3.75 / 2]) {
         minkowski() {
@@ -266,7 +271,7 @@ module portDent() {
 }
 
 module powerPort() {
-    translate([piOffset.x + 3.5 + 7.7 / 2, -(boxSize.y / 2 + 3), piOffset.z + 5 + 3.2 - 3.75 / 2]) {
+    translate([piOffset.x + piEdgeToMt + piMntToPwr / 2, -(boxSize.y / 2 + 3), piOffset.z + 5 + 3.2 - 3.75 / 2]) {
         minkowski() {
             cube([9.5 - 1, 5, 3.75 - 1]);
             sphere();
@@ -275,7 +280,7 @@ module powerPort() {
 }
 
 module hdmiPort(off) {
-    translate([piOffset.x + 3.5 + 7.7 + 14.8 - 7 / 2 + off, -(boxSize.y / 2 + 3), piOffset.z + 5 + 3.0 - 3.75 / 2]) {
+    translate([piOffset.x + piEdgeToMt + piMntToPwr + piPwrToHDMI1 - 7 / 2 + off, -(boxSize.y / 2 + 3), piOffset.z + 5 + 3.0 - 3.75 / 2]) {
         minkowski() {
             cube([7 - 1, 5, 5 - 1]);
             sphere(1);
