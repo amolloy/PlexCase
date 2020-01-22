@@ -36,7 +36,7 @@ keystoneOffset = [boxSize.x / 2 - 35,
 // Uncomment to render the main box
 enclosure();
 // Uncomment to render the box lid.
-//lid();
+lid();
 
 module enclosure() {
     difference() {
@@ -75,65 +75,84 @@ module enclosureVents() {
 }
 
 module lid() {
-    rimHeight = wallThickness / 2 * 0.9;
-    middleHeight = wallThickness * 1.5;
-    
-    cr = 1.75;
-    
-    union() {
-        translate([-boxSize.x / 2 + 15,
-                   0,
-                   boxDepth / 2 - 0.3]) {
-            rotate([90, 0, 0]) cylinder(r=0.5, h=boxSize.y * 0.99, center=true);
-        }
+    difference() {
+        rimHeight = wallThickness / 2 * 0.9;
+        middleHeight = wallThickness * 1.5;
         
-        translate([wallThickness / 2, 0, boxDepth / 2 - wallThickness / 2 + 1]) {
-            translate([0,0, -0.5 * lidFix])
-            cube([boxSize.x, 
-                  boxSize.y * 0.99, 
-                  rimHeight + lidFix],
-            center=true);
-            
-            minkowski() {
-                cube([boxSize.x - wallThickness * 2 + wallThickness - cr,
-                      boxSize.y - wallThickness * 1.25 - cr * 2,
-                      middleHeight - cr * 2],
-                center=true);
-                cylinder(r=cr, h=1);
+        cr = 1.75;
+        
+        union() {
+            translate([-boxSize.x / 2 + 15,
+                       0,
+                       boxDepth / 2 - 0.3]) {
+                rotate([90, 0, 0]) cylinder(r=0.5, h=boxSize.y * 0.99, center=true);
             }
-        }
-        
-        translate([boxSize.x / 2 - wallThickness / 2 + 0.15, 0, boxDepth / 2 - wallThickness / 2 + 1.13]) {
             
-        }
-        
-        translate([boxSize.x / 2 - 0.9, 
-                   0, 
-                   boxDepth / 2 + 0.245]) {
-            cube([wallThickness, 
-                  boxSize.y - wallThickness * 1.25, 
-                  wallThickness / 2],
-                 center=true);
-        }
-
-        
-        intersection() {
-            translate([boxSize.x / 2 - wallThickness / 2 + 0.08, 0, boxDepth / 2 - wallThickness / 2 + 1.4]) {
+            translate([wallThickness / 2, 0, boxDepth / 2 - wallThickness / 2 + 1]) {
+                translate([0,0, -0.5 * lidFix])
+                cube([boxSize.x, 
+                      boxSize.y * 0.99, 
+                      rimHeight + lidFix],
+                center=true);
+                
                 minkowski() {
-                    cube([wallThickness * 0.96, 
-                          boxSize.y, 
-                          wallThickness - 3.5],
+                    cube([boxSize.x - wallThickness * 2 + wallThickness - cr,
+                          boxSize.y - wallThickness * 1.25 - cr * 2,
+                          middleHeight - cr * 2],
                     center=true);
-                    sphere(2);
+                    cylinder(r=cr, h=1);
                 }
             }
-            translate([boxSize.x / 2 + wallThickness / 2, 
-                   0, 
-                   boxDepth / 2 + 0.245]) {
-                cube([wallThickness / 1.7, 
+            
+            translate([boxSize.x / 2 - wallThickness / 2 + 0.15, 0, boxDepth / 2 - wallThickness / 2 + 1.13]) {
+                
+            }
+            
+            translate([boxSize.x / 2 - 0.9, 
+                       0, 
+                       boxDepth / 2 + 0.245]) {
+                cube([wallThickness, 
                       boxSize.y - wallThickness * 1.25, 
                       wallThickness / 2],
-                center=true);
+                     center=true);
+            }
+
+            
+            intersection() {
+                translate([boxSize.x / 2 - wallThickness / 2 + 0.08, 0, boxDepth / 2 - wallThickness / 2 + 1.4]) {
+                    minkowski() {
+                        cube([wallThickness * 0.96, 
+                              boxSize.y, 
+                              wallThickness - 3.5],
+                        center=true);
+                        sphere(2);
+                    }
+                }
+                translate([boxSize.x / 2 + wallThickness / 2, 
+                       0, 
+                       boxDepth / 2 + 0.245]) {
+                    cube([wallThickness / 1.7, 
+                          boxSize.y - wallThickness * 1.25, 
+                          wallThickness / 2],
+                    center=true);
+                }
+            }
+        }
+    
+        lidVents();
+    }
+}
+
+module lidVents() {
+    ventSpacing = 5;
+    ventCount = piSize.x / ventSpacing;
+    for (i = [0 : ventCount]) {
+        translate([i * ventSpacing + piOffset.x,
+                   piOffset.y / 2, 
+                   boxDepth / 2]) {
+            minkowski() {
+                cube([1, piSize.y * 0.75, boxDepth * 0.5], center=true);
+                sphere(1);
             }
         }
     }
