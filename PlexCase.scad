@@ -3,6 +3,8 @@ $fn = 50;
 use <PiHoles/PiHoles.scad>
 use <keystone.scad>
 
+lidFix = 0.35;
+
 wallThickness = 4;
 boxDepth = 34;
 sideClearances = 2;
@@ -34,7 +36,7 @@ keystoneOffset = [boxSize.x / 2 - 35,
 // Uncomment to render the main box
 enclosure();
 // Uncomment to render the box lid.
-lid();
+//lid();
 
 module enclosure() {
     difference() {
@@ -71,9 +73,10 @@ module lid() {
         }
         
         translate([wallThickness / 2, 0, boxDepth / 2 - wallThickness / 2 + 1]) {
+            translate([0,0, -0.5 * lidFix])
             cube([boxSize.x, 
                   boxSize.y * 0.99, 
-                  rimHeight],
+                  rimHeight + lidFix],
             center=true);
             
             minkowski() {
@@ -124,10 +127,10 @@ module lid() {
 module lidSlide() {
     difference() {
         union() {
-            translate([-boxSize.x / 2 + 1, -boxSize.y / 2, boxDepth / 2 - wallThickness / 2]) {
+            translate([-boxSize.x / 2 + 1, -boxSize.y / 2, boxDepth / 2 - wallThickness / 2 - lidFix * 2 / 2]) {
                 cube([boxSize.x - wallThickness / 2 + wallThickness * 8, 
                       boxSize.y, 
-                      2]);
+                      2 + lidFix * 2]);
             }
             translate([boxSize.x / 2 - wallThickness, -boxSize.y / 2 + wallThickness / 2, boxDepth / 2 - 1]) {
                 cube([wallThickness * 2, boxSize.y - wallThickness, wallThickness + 1]);
