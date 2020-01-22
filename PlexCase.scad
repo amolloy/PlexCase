@@ -47,6 +47,7 @@ module enclosure() {
         headphonePort();
         keystonePort();
         lidSlide();
+        enclosureVents();
     }
 
     translate(piOffset) piPosts("3B", 5);
@@ -56,6 +57,20 @@ module enclosure() {
 
     translate(keystoneOffset) {
         rotate([270,0,0]) keystone();
+    }
+}
+
+module enclosureVents() {
+    ventCount = 18;
+    for (x = [-1, 1]) {
+        for (i = [0 : ventCount]) {
+            translate([x * boxSize.x / 2, (i - ventCount / 2) * 5, 0]) {
+                minkowski() {
+                    cube([10, 1, boxDepth * 0.5], center=true);
+                    sphere(1);
+                }
+            }
+        }
     }
 }
 
