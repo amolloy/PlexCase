@@ -5,7 +5,7 @@ use <keystone.scad>
 
 lidFix = 0.35;
 
-wallThickness = 4;
+wallThickness = 3;
 boxDepth = 34;
 sideClearances = 2;
 
@@ -14,7 +14,7 @@ ssdUSBPlugClearance = 55;
 
 piSize = piBoardDim("3B");
 sdcardAccessSize = [17, 14, 7];
-sdcardAccessOverlap = 2;
+sdcardAccessOverlap = 1.5;
 
 ssdPostWidth = 2;
 ssdPostHeight = 8;
@@ -41,6 +41,7 @@ lid();
 module enclosure() {
     difference() {
         boxBase();
+        portDent();
         powerPort();
         hdmiPort(0);
         hdmiPort(13.5);
@@ -239,26 +240,36 @@ module boxBase() {
                   sdcardAccessSize.y + wallThickness * 2,
                   sdcardAccessSize.z], 
                      center = true);
-                       }
-            }
-            
-            
-            translate([-boxSize.x / 2 - sideClearances + sdcardAccessSize.x - sdcardAccessSize.x / 2 - wallThickness, 
-                       piOffset.y / 2, 
-                       -boxDepth / 2 + sdcardAccessSize.z / 2 - wallThickness]) {
-            cube([sdcao.x + 2, 
-                  sdcao.y - wallThickness, 
-                  sdcao.z], 
-                 center = true);
             }
         }
+        
+        translate([-boxSize.x / 2 - sideClearances + sdcardAccessSize.x - sdcardAccessSize.x / 2 - wallThickness, 
+                   piOffset.y / 2, 
+                   -boxDepth / 2 + sdcardAccessSize.z / 2 - wallThickness]) {
+        cube([sdcao.x + 2, 
+              sdcao.y - wallThickness, 
+              sdcao.z], 
+             center = true);
+        }
+    }
+}
+
+module portDent() {
+    w = ((piOffset.x + 3.5 + 7.7 / 2) + (piOffset.x + 53.5));
+    x = w / 2;
+    translate([x, -(boxSize.y / 2 + 2), piOffset.z + 6 + 5.0 - 3.75 / 2]) {
+        minkowski() {
+            cube([abs(w) * 0.7, 1, 10], center=true);
+            sphere(1);
+        }
+    }
 }
 
 module powerPort() {
     translate([piOffset.x + 3.5 + 7.7 / 2, -(boxSize.y / 2 + 3), piOffset.z + 5 + 3.2 - 3.75 / 2]) {
         minkowski() {
             cube([9.5 - 1, 5, 3.75 - 1]);
-            sphere(1);
+            sphere();
         }
     }
 }
@@ -273,7 +284,7 @@ module hdmiPort(off) {
 }
 
 module headphonePort() {
-    translate([piOffset.x + 53.5, -(boxSize.y / 2), piOffset.z + 5 + 6.0 - 3.75 / 2]) {
+    translate([piOffset.x + 53.5, -(boxSize.y / 2 - 3), piOffset.z + 5 + 6.0 - 3.75 / 2]) {
         rotate([90,0,0]) cylinder(6, 3.5, 3.5);
     }
 }
