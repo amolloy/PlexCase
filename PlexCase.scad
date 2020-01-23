@@ -3,6 +3,8 @@ $fn = 50;
 use <PiHoles/PiHoles.scad>
 use <keystone.scad>
 
+piModel = "3B";
+
 piEdgeToMt = 3.5;
 piMntToPwr = 7.7;
 piPwrToHDMI1 = 14.8;
@@ -17,7 +19,7 @@ sideClearances = 2;
 ssdSize = [115, 36, 1];
 ssdUSBPlugClearance = 55;
 
-piSize = piBoardDim("3B");
+piSize = piBoardDim(piModel);
 sdcardAccessSize = [17, 14, 7];
 sdcardAccessOverlap = 1.5;
 
@@ -41,7 +43,20 @@ keystoneOffset = [boxSize.x / 2 - 35,
 // Uncomment to render the main box
 enclosure();
 // Uncomment to render the box lid.
-lid();
+//lid();
+
+module piScrewHoles (board, depth = 5, preview=true) {
+	hd = 1.375 * 2; // hole large enough to accomodate M2.5 screws 
+
+	//preview of the board itself
+	if(preview==true)
+		% piBoard(board);
+	
+	//mounting holes
+	for(holePos = piHoleLocations(board)) {
+		translate([holePos[0], holePos[1], -depth]) cylinder(d=hd, h=depth);
+	}
+}
 
 module enclosure() {
     difference() {
@@ -54,15 +69,44 @@ module enclosure() {
         keystonePort();
         lidSlide();
         enclosureVents();
+        translate(piOffset) translate([0,0,5]) piScrewHoles(piModel, 10);
+        for (i = [0 : 3]) piNutInset(i);
     }
-
-    translate(piOffset) piPosts("3B", 5);
+  
+//    translate(piOffset) piPosts(piModel, 5);
+    
     translate([0, 0, -boxDepth / 2 + ssdPostHeight / 2]) {
         ssdSupport(-10, boxSize.y / 2 - 36 / 2 - 5, 100, 36);
     }
 
     translate(keystoneOffset) {
         rotate([270,0,0]) keystone();
+    }
+}
+
+module piSupportLeg(index) {
+    pihl = piHoleLocations(piModel);
+    pidm = piBoardDim(piModel);
+    h = 3.1; // Calculated very scientifically by leaving the old posts in place and tweaking the value until they lined up.
+    td = 6 / 2;
+    bd = 10 / 2;
+    translate([piOffset.x + pihl[index].x, 
+               piOffset.y + pihl[index].y, 
+               -boxDepth / 2 - 0.5 + h / 2]) {
+        cylinder((h + 0.5) / 2, bd, td, center = true);
+        translate([0,0,h/2]) cylinder((h + 0.5) / 2, td, td, center = true);
+        
+    }
+}
+
+module piNutInset(index) {
+    pihl = piHoleLocations(piModel);
+    pidm = piBoardDim(piModel);
+    h=2.5;
+    translate([piOffset.x + pihl[index].x, 
+               piOffset.y + pihl[index].y, 
+               -boxDepth / 2 - (wallThickness - h - 0.25)]) {
+         cylinder(r=2.6, h=h, center=true);
     }
 }
 
@@ -180,7 +224,7 @@ module lidSlide() {
         translate([-boxSize.x / 2 + 14,
                0,
                boxDepth / 2 + 0.1]) {
-        rotate([90, 0, 0]) cylinder(r=0.5, h=boxSize.y* 2, center=true);
+        rotate([90, 0, 0]) cylinder(r=0.5, h=boxSize.y * 2, center=true);
         }
     }
 }
@@ -222,6 +266,8 @@ module boxBase() {
     
     difference() {
         union() {
+            for(i = [0 : 3]) piSupportLeg(i);
+
             difference() {
                 minkowski() {
                     cube([boxSize.x, boxSize.y, boxDepth], center=true);
