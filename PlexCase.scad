@@ -73,8 +73,6 @@ module enclosure() {
         for (i = [0 : 3]) piNutInset(i);
     }
   
-//    translate(piOffset) piPosts(piModel, 5);
-    
     translate([0, 0, -boxDepth / 2 + ssdPostHeight / 2]) {
         ssdSupport(-10, boxSize.y / 2 - 36 / 2 - 5, 100, 36);
     }
